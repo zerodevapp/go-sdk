@@ -30,7 +30,9 @@ func main() {
 	baseURL := "http://localhost:3010"
 	entrypointVersion := "0.7"
 	//
+	//
 	// Get account implementation address from SDK
+	//
 	//
 	accountImplementationAddress, err := constants.GetAccountImplementationAddress(kernelVersion)
 	if err != nil {
@@ -45,7 +47,9 @@ func main() {
 	fmt.Printf("\tBase URL: %s\n", baseURL)
 
 	//
+	//
 	// Get ECDSA private key for signing
+	//
 	//
 	privateKey, err := crypto.GenerateKey()
 	if err != nil {
@@ -78,6 +82,9 @@ func main() {
 	//
 	//
 	client := useropbuilder.NewUserOpBuilder(projectID, baseURL)
+
+	// Optional
+	client.InitialiseKernelClient(chainID, context.Background())
 
 	//
 	//

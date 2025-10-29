@@ -40,6 +40,35 @@ func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, httpClient
 }
 
 // BuildUserOp builds a user operation
+func (c *UseropBuilderClient) InitialiseKernelClient(chainID uint64, ctx context.Context) (bool, error) {
+	url := fmt.Sprintf("%s/%s/%d/init-kernel-client", c.baseURL, c.projectID, chainID)
+
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", url, nil)
+	if err != nil {
+		return false, fmt.Errorf("failed to create request: %w", err)
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return false, fmt.Errorf("failed to send request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return false, fmt.Errorf("unexpected status code %d: %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	var result types.BuildUserOpResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return false, fmt.Errorf("failed to decode response: %w", err)
+	}
+
+	return true, nil
+}
+
+// BuildUserOp builds a user operation
 func (c *UseropBuilderClient) BuildUserOp(ctx context.Context, chainID uint64, req *types.BuildUserOpRequest) (*types.BuildUserOpResponse, error) {
 	url := fmt.Sprintf("%s/%s/%d/build-userop", c.baseURL, c.projectID, chainID)
 
