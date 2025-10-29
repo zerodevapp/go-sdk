@@ -1,12 +1,14 @@
+// Package types defines data structures for user operations, authorizations, and API requests/responses.
 package types
 
-// Authorization represents an EIP-7702 authorization
+// Authorization represents an EIP-7702 authorization.
 type Authorization struct {
 	ChainID uint64 `json:"chainId"`
 	Address string `json:"address"`
 	Nonce   uint64 `json:"nonce"`
 }
 
+// SignedAuthorization represents an EIP-7702 authorization with signature components.
 type SignedAuthorization struct {
 	ChainID uint64 `json:"chainId"`
 	Address string `json:"address"`
@@ -17,14 +19,14 @@ type SignedAuthorization struct {
 	YParity uint8  `json:"yParity"`
 }
 
-// Call represents a single call in a user operation
+// Call represents a single call in a user operation.
 type Call struct {
 	To    string `json:"to"`
 	Value string `json:"value"`
 	Data  string `json:"data"`
 }
 
-// BuildUserOpRequest represents a request to build a user operation
+// BuildUserOpRequest represents a request to build a user operation.
 type BuildUserOpRequest struct {
 	Account          string               `json:"account"`
 	Authorization    *SignedAuthorization `json:"authorization,omitempty"`
@@ -35,7 +37,7 @@ type BuildUserOpRequest struct {
 	Calls            []Call               `json:"calls"`
 }
 
-// BuildUserOpResponse represents the response from building a user operation
+// BuildUserOpResponse represents the response from building a user operation.
 type BuildUserOpResponse struct {
 	Sender                        string               `json:"sender"`
 	Nonce                         string               `json:"nonce"`
@@ -59,19 +61,19 @@ type BuildUserOpResponse struct {
 	PaymasterData                 string               `json:"paymasterData,omitempty"`
 }
 
-// SendUserOpRequest represents a request to send a user operation
+// SendUserOpRequest represents a request to send a user operation.
 type SendUserOpRequest struct {
 	BuildUserOpResponse
 	EntryPointVersion string `json:"entryPointVersion"`
 	Signature         string `json:"signature"`
 }
 
-// SendUserOpResponse represents the response from sending a user operation
+// SendUserOpResponse represents the response from sending a user operation.
 type SendUserOpResponse struct {
 	UserOpHash string `json:"userOpHash"`
 }
 
-// GetUserOpReceiptRequest represents a request to get a user operation receipt
+// GetUserOpReceiptRequest represents a request to get a user operation receipt.
 type GetUserOpReceiptRequest struct {
 	UserOpHash string `json:"userOpHash"`
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/zerodevapp/sdk-go/cmd/types"
 )
 
-// UseropBuilderClient represents a UserOp Builder API client
+// UseropBuilderClient represents a UserOp Builder API client.
 type UseropBuilderClient struct {
 	projectID  string
 	baseURL    string
@@ -20,7 +20,7 @@ type UseropBuilderClient struct {
 	httpClient *http.Client
 }
 
-// NewUserOpBuilder creates a new UserOp Builder API client
+// NewUserOpBuilder creates a new UserOp Builder API client with default HTTP client.
 func NewUserOpBuilder(projectID string, baseURL string, apiKey string) *UseropBuilderClient {
 	return &UseropBuilderClient{
 		projectID: projectID,
@@ -32,7 +32,7 @@ func NewUserOpBuilder(projectID string, baseURL string, apiKey string) *UseropBu
 	}
 }
 
-// NewUserOpBuilderWithHTTPClient creates a new client with a custom HTTP client
+// NewUserOpBuilderWithHTTPClient creates a new client with a custom HTTP client.
 func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, apiKey string, httpClient *http.Client) *UseropBuilderClient {
 	return &UseropBuilderClient{
 		projectID:  projectID,
@@ -42,7 +42,7 @@ func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, apiKey str
 	}
 }
 
-// BuildUserOp builds a user operation
+// InitialiseKernelClient initializes the kernel client for a specific chain.
 func (c *UseropBuilderClient) InitialiseKernelClient(chainID uint64, ctx context.Context) (bool, error) {
 	url := fmt.Sprintf("%s/%s/%d/init-kernel-client", c.baseURL, c.projectID, chainID)
 
@@ -72,7 +72,7 @@ func (c *UseropBuilderClient) InitialiseKernelClient(chainID uint64, ctx context
 	return true, nil
 }
 
-// BuildUserOp builds a user operation
+// BuildUserOp builds a user operation with the provided parameters.
 func (c *UseropBuilderClient) BuildUserOp(ctx context.Context, chainID uint64, req *types.BuildUserOpRequest) (*types.BuildUserOpResponse, error) {
 	url := fmt.Sprintf("%s/%s/%d/build-userop", c.baseURL, c.projectID, chainID)
 
@@ -107,7 +107,7 @@ func (c *UseropBuilderClient) BuildUserOp(ctx context.Context, chainID uint64, r
 	return &result, nil
 }
 
-// SendUserOp sends a user operation
+// SendUserOp sends a user operation to the bundler.
 func (c *UseropBuilderClient) SendUserOp(ctx context.Context, chainID uint64, req *types.SendUserOpRequest) (*types.SendUserOpResponse, error) {
 	url := fmt.Sprintf("%s/%s/%d/send-userop", c.baseURL, c.projectID, chainID)
 
@@ -142,7 +142,7 @@ func (c *UseropBuilderClient) SendUserOp(ctx context.Context, chainID uint64, re
 	return &result, nil
 }
 
-// GetUserOpReceipt gets the receipt for a user operation
+// GetUserOpReceipt gets the receipt for a user operation by hash.
 func (c *UseropBuilderClient) GetUserOpReceipt(ctx context.Context, chainID uint64, req *types.GetUserOpReceiptRequest) (*types.UserOpReceipt, error) {
 	url := fmt.Sprintf("%s/%s/%d/get-userop-receipt", c.baseURL, c.projectID, chainID)
 
@@ -193,7 +193,7 @@ func (c *UseropBuilderClient) GetUserOpReceipt(ctx context.Context, chainID uint
 	return &result, nil
 }
 
-// WaitForUserOpReceipt polls for the user operation receipt until it's available or timeout
+// WaitForUserOpReceipt polls for the user operation receipt until it's available or timeout is reached.
 func (c *UseropBuilderClient) WaitForUserOpReceipt(ctx context.Context, chainID uint64, req *types.GetUserOpReceiptRequest, pollInterval time.Duration, timeout time.Duration) (*types.UserOpReceipt, error) {
 	if pollInterval == 0 {
 		pollInterval = 2 * time.Second

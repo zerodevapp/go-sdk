@@ -2,16 +2,17 @@ package constants
 
 import "fmt"
 
-// KernelVersion represents a supported kernel version
+// KernelVersion represents a supported kernel version.
 type KernelVersion string
 
+// Supported kernel versions
 const (
 	KernelVersion031 KernelVersion = "0.3.1"
 	KernelVersion032 KernelVersion = "0.3.2"
 	KernelVersion033 KernelVersion = "0.3.3"
 )
 
-// KernelAddresses contains addresses for a specific kernel version
+// KernelAddresses contains deployment addresses for a specific kernel version.
 type KernelAddresses struct {
 	AccountImplementationAddress string
 	FactoryAddress               string
@@ -19,7 +20,7 @@ type KernelAddresses struct {
 	InitCodeHash                 string
 }
 
-// KernelVersionToAddressesMap maps kernel versions to their respective addresses
+// KernelVersionToAddressesMap maps kernel versions to their deployment addresses.
 var KernelVersionToAddressesMap = map[KernelVersion]KernelAddresses{
 	KernelVersion031: {
 		AccountImplementationAddress: "0xBAC849bB641841b44E965fB01A4Bf5F074f84b4D",
