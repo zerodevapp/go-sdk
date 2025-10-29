@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/ethereum/go-ethereum/crypto"
@@ -14,18 +14,16 @@ import (
 	useropbuilder "github.com/zerodevapp/sdk-go/cmd/useropbuilder"
 )
 
-func logJSON(v interface{}) {
-	jsonBytes, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		log.Printf("Error marshaling to JSON: %v", err)
-		return
+func run7702Example() {
+	projectID := os.Getenv("ZERODEV_PROJECT_ID")
+	if projectID == "" {
+		log.Fatal("ZERODEV_PROJECT_ID is required. Please set it in .env file or as an environment variable")
 	}
-	log.Printf("%s", string(jsonBytes))
-}
 
-func main() {
-	projectID := "PROJECT_ID"
-	apiKey := "your-api-key-here"
+	apiKey := os.Getenv("USEROP_BUILDER_API_KEY")
+	if apiKey == "" {
+		log.Fatal("USEROP_BUILDER_API_KEY is required. Please set it in .env file or as an environment variable")
+	}
 	chainID := uint64(11155111) // Sepolia
 	kernelVersion := constants.KernelVersion033
 	baseURL := "http://localhost:3010"
