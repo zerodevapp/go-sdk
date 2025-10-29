@@ -1,4 +1,4 @@
-package example
+package main
 
 import (
 	"context"
@@ -24,7 +24,6 @@ func logJSON(v interface{}) {
 }
 
 func main() {
-
 	projectID := "PROJECT_ID"
 	chainID := uint64(11155111) // Sepolia
 	kernelVersion := constants.KernelVersion033
@@ -87,7 +86,7 @@ func main() {
 	//
 	calls := []types.Call{
 		{
-			To:    "0x000000000000000000000000000000000000000",
+			To:    "0x0000000000000000000000000000000000000000",
 			Value: "0",
 			Data:  "0x",
 		},
@@ -112,6 +111,7 @@ func main() {
 		KernelVersion: string(kernelVersion),
 		Calls:         calls,
 	}
+	logJSON(buildReq)
 
 	buildUseropResponse, err := client.BuildUserOp(context.Background(), chainID, buildReq)
 	if err != nil {
