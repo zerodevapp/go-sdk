@@ -17,6 +17,29 @@ go get github.com/zerodevapp/sdk-go
 - Wait for User Operation receipts with automatic polling
 - ECDSA signature support
 
+## Environment Variables
+
+The SDK requires the following environment variables to be set:
+
+1. Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` and add your ZeroDev credentials:
+   ```bash
+   ZERODEV_PROJECT_ID=your-project-id-here
+   USEROP_BUILDER_API_KEY=your-api-key-here
+   ```
+
+Get your Project ID and API Key from the [ZeroDev Dashboard](https://dashboard.zerodev.app).
+
+Alternatively, you can set these as system environment variables:
+```bash
+export ZERODEV_PROJECT_ID="your-project-id"
+export USEROP_BUILDER_API_KEY="your-api-key"
+```
+
 ## Quick Start
 
 ```go
@@ -25,9 +48,11 @@ package main
 import (
     "context"
     "log"
+    "os"
     "time"
 
     "github.com/ethereum/go-ethereum/crypto"
+    "github.com/joho/godotenv"
     "github.com/zerodevapp/sdk-go/cmd/constants"
     "github.com/zerodevapp/sdk-go/cmd/signer"
     "github.com/zerodevapp/sdk-go/cmd/types"
@@ -35,9 +60,14 @@ import (
 )
 
 func main() {
+    // Load .env file
+    if err := godotenv.Load(); err != nil {
+        log.Println("No .env file found, using system environment variables")
+    }
+
     // Configuration
-    projectID := "your-project-id"
-    apiKey := "your-api-key"
+    projectID := os.Getenv("ZERODEV_PROJECT_ID")
+    apiKey := os.Getenv("USEROP_BUILDER_API_KEY")
     chainID := uint64(11155111) // Sepolia testnet
     kernelVersion := constants.KernelVersion033
     baseURL := "https://api.zerodev.app"
@@ -333,18 +363,37 @@ type UserOpReceipt struct {
 
 ## Examples
 
-See [example/example.go](example/example.go) for a complete working example that demonstrates:
+The example directory contains working examples demonstrating different features of the SDK.
 
+### Available Examples
+
+#### EIP-7702 Example
+Demonstrates the complete flow of:
 1. Building a User Operation with EIP-7702 authorization
 2. Signing and sending the User Operation
 3. Waiting for the receipt
 4. Building subsequent operations without authorization
 
-Run the example:
+### Running Examples
+
+First, set up your environment variables:
+
+```bash
+# Copy the example .env file
+cp .env.example .env
+# Edit .env and add your ZERODEV_PROJECT_ID and USEROP_BUILDER_API_KEY
+```
+
+Then run an example:
 
 ```bash
 cd example
-go run example.go
+
+# Run the EIP-7702 example
+go run . eip7702
+
+# Show available commands
+go run . help
 ```
 
 ## Requirements
