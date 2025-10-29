@@ -43,8 +43,20 @@ func SignUserOpHash(userOpHash string, privateKey *ecdsa.PrivateKey) (string, er
 	}
 
 	// crypto.Sign returns [R || S || V] where V is already 0 or 1
-	// Return the signature as-is in hex format
-	return "0x" + hex.EncodeToString(signatureBytes), nil
+
+	v := signatureBytes[64]
+	if v < 27 {
+		v += 27
+	}
+	r := signatureBytes[:32]
+	s := signatureBytes[32:64]
+
+	// Rearrange signature to encodePacked(r, s, v)
+	useropSignature := append(r, s...)
+	useropSignature = append(useropSignature, v)
+
+	return "0x" + hex.EncodeToString(useropSignature), nil
+
 }
 
 // VerifyUserOpSignature verifies that a signature is valid for a given user operation hash.
