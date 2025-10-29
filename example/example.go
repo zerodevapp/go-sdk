@@ -54,7 +54,7 @@ func main() {
 	// Ethereum address from private key
 	address := crypto.PubkeyToAddress(privateKey.PublicKey)
 	addressHex := address.Hex()
-	fmt.Println("=== Account ===")
+	fmt.Println("\n=== Account ===")
 	fmt.Println("\tAddress:", addressHex)
 
 	//
@@ -66,11 +66,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to sign authorization: %v", err)
 	}
-	fmt.Println("=== Authorization Signed ===")
-	fmt.Printf("  R: %s\n", authorization.R)
-	fmt.Printf("  S: %s\n", authorization.S)
-	fmt.Printf("  V: %s\n", authorization.V)
-	fmt.Printf("  YParity: %d\n", authorization.YParity)
+	fmt.Println("\n=== Authorization Signed ===")
+	fmt.Printf("\tR: %s\n", authorization.R)
+	fmt.Printf("\tS: %s\n", authorization.S)
+	fmt.Printf("\tV: %s\n", authorization.V)
+	fmt.Printf("\tYParity: %d\n", authorization.YParity)
 
 	//
 	//
@@ -102,7 +102,7 @@ func main() {
 	// Build user operation
 	//
 	//
-	fmt.Println("\n=== Step 1: Build User Operation ===")
+	fmt.Println("\n\n\n=== Step 1: Build User Operation ===")
 	buildReq := &types.BuildUserOpRequest{
 		Account:       addressHex, // Use .Hex() to convert common.Address to string
 		Authorization: authorization,
@@ -118,7 +118,7 @@ func main() {
 		log.Fatalf("Failed to build user op: %v", err)
 	}
 
-	fmt.Printf("✓ UserOp built successfully!\n")
+	fmt.Printf("\n✓ UserOp built successfully!\n")
 	logJSON(buildUseropResponse)
 
 	//
@@ -126,7 +126,7 @@ func main() {
 	// Sign the user operation hash
 	//
 	//
-	fmt.Println("\n=== Step 2: Sign User Operation ===")
+	fmt.Println("\n\n\n=== Step 2: Sign User Operation ===")
 	fmt.Printf("Signing hash: %s\n", buildUseropResponse.UserOpHash)
 
 	// Sign using go-ethereum's crypto.Sign with personal_sign format
@@ -141,7 +141,7 @@ func main() {
 	// Send the built and signed user operation
 	//
 	//
-	fmt.Println("\n=== Step 3: Send User Operation ===")
+	fmt.Println("\n\n\n=== Step 3: Send User Operation ===")
 
 	// Send user operation
 	sendUseropResponse := &types.SendUserOpRequest{
@@ -155,7 +155,7 @@ func main() {
 		log.Fatalf("Failed to send user op: %v", err)
 	}
 
-	fmt.Printf("✓ UserOp sent successfully!\n")
+	fmt.Printf("\n✓ UserOp sent successfully!\n")
 	logJSON(sendResp)
 
 	//
@@ -163,7 +163,7 @@ func main() {
 	// Wait for user operation receipt
 	//
 	//
-	fmt.Println("\n=== Step 4: Wait for Receipt ===")
+	fmt.Println("\n\n\n=== Step 4: Wait for Receipt ===")
 	// Wait for receipt
 	receiptReq := &types.GetUserOpReceiptRequest{
 		UserOpHash: sendResp.UserOpHash,
