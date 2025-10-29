@@ -16,14 +16,16 @@ import (
 type UseropBuilderClient struct {
 	projectID  string
 	baseURL    string
+	apiKey     string
 	httpClient *http.Client
 }
 
 // NewUserOpBuilder creates a new UserOp Builder API client
-func NewUserOpBuilder(projectID string, baseURL string) *UseropBuilderClient {
+func NewUserOpBuilder(projectID string, baseURL string, apiKey string) *UseropBuilderClient {
 	return &UseropBuilderClient{
 		projectID: projectID,
 		baseURL:   baseURL,
+		apiKey:    apiKey,
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -31,10 +33,11 @@ func NewUserOpBuilder(projectID string, baseURL string) *UseropBuilderClient {
 }
 
 // NewUserOpBuilderWithHTTPClient creates a new client with a custom HTTP client
-func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, httpClient *http.Client) *UseropBuilderClient {
+func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, apiKey string, httpClient *http.Client) *UseropBuilderClient {
 	return &UseropBuilderClient{
 		projectID:  projectID,
 		baseURL:    baseURL,
+		apiKey:     apiKey,
 		httpClient: httpClient,
 	}
 }
@@ -48,6 +51,7 @@ func (c *UseropBuilderClient) InitialiseKernelClient(chainID uint64, ctx context
 		return false, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("X-API-KEY", c.apiKey)
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -82,6 +86,7 @@ func (c *UseropBuilderClient) BuildUserOp(ctx context.Context, chainID uint64, r
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("X-API-KEY", c.apiKey)
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -116,6 +121,7 @@ func (c *UseropBuilderClient) SendUserOp(ctx context.Context, chainID uint64, re
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("X-API-KEY", c.apiKey)
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -150,6 +156,7 @@ func (c *UseropBuilderClient) GetUserOpReceipt(ctx context.Context, chainID uint
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("X-API-KEY", c.apiKey)
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {

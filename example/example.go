@@ -25,6 +25,7 @@ func logJSON(v interface{}) {
 
 func main() {
 	projectID := "PROJECT_ID"
+	apiKey := "your-api-key-here"
 	chainID := uint64(11155111) // Sepolia
 	kernelVersion := constants.KernelVersion033
 	baseURL := "http://localhost:3010"
@@ -81,7 +82,7 @@ func main() {
 	// Create UserOpBuilder client
 	//
 	//
-	client := useropbuilder.NewUserOpBuilder(projectID, baseURL)
+	client := useropbuilder.NewUserOpBuilder(projectID, baseURL, apiKey)
 
 	// Optional
 	client.InitialiseKernelClient(chainID, context.Background())
@@ -111,12 +112,12 @@ func main() {
 	//
 	fmt.Println("\n\n\n=== Step 1: Build User Operation ===")
 	buildReq := &types.BuildUserOpRequest{
-		Account:       addressHex, // Use .Hex() to convert common.Address to string
-		Authorization: authorization,
-		Nonce:         "0",
-		Entrypoint:    entrypointVersion,
-		KernelVersion: string(kernelVersion),
-		Calls:         calls,
+		Account:          addressHex, // Use .Hex() to convert common.Address to string
+		Authorization:    authorization,
+		IsEip7702Account: true,
+		Entrypoint:       entrypointVersion,
+		KernelVersion:    string(kernelVersion),
+		Calls:            calls,
 	}
 	logJSON(buildReq)
 
@@ -183,4 +184,83 @@ func main() {
 	fmt.Println("\n=== Result ===")
 	fmt.Printf("✓ UserOp receipt received!\n")
 	logJSON(receipt)
+
+	//
+	//
+	// Build request 2 - without the authorization
+	//
+	//
+	fmt.Println("\n\n\n=== Step 5: Build User Operation Without Authorization ===")
+	buildReq2 := &types.BuildUserOpRequest{
+		Account:          addressHex, // Use .Hex() to convert common.Address to string
+		IsEip7702Account: true,
+		Entrypoint:       entrypointVersion,
+		KernelVersion:    string(kernelVersion),
+		Calls:            calls,
+	}
+	logJSON(buildReq2)
+
+	buildUseropResponse2, err := client.BuildUserOp(context.Background(), chainID, buildReq2)
+	if err != nil {
+		log.Fatalf("Failed to build user op: %v", err)
+	}
+
+	fmt.Printf("\n✓ UserOp built successfully!\n")
+	logJSON(buildUseropResponse2)
+
+	//
+	//
+	// Sign the user operation hash
+	//
+	//
+	fmt.Println("\n\n\n=== Step 6: Sign User Operation Without Authorization ===")
+	fmt.Printf("Signing hash: %s\n", buildUseropResponse2.UserOpHash)
+
+	// Sign using go-ethereum's crypto.Sign with personal_sign format
+	signatureHex2, err := signer.SignUserOpHash(buildUseropResponse2.UserOpHash, privateKey)
+	if err != nil {
+		log.Fatalf("Failed to sign user op hash: %v", err)
+	}
+	fmt.Printf("✓ UserOp hash signed successfully!\n")
+
+	//
+	//
+	// Send the built and signed user operation
+	//
+	//
+	fmt.Println("\n\n\n=== Step 7: Send User Operation Without Authorization ===")
+
+	// Send user operation
+	sendUseropResponse2 := &types.SendUserOpRequest{
+		BuildUserOpResponse: *buildUseropResponse2,
+		EntryPointVersion:   entrypointVersion,
+		Signature:           signatureHex2,
+	}
+
+	sendResp2, err := client.SendUserOp(context.Background(), chainID, sendUseropResponse2)
+	if err != nil {
+		log.Fatalf("Failed to send user op: %v", err)
+	}
+
+	fmt.Printf("\n✓ UserOp sent successfully!\n")
+	logJSON(sendResp2)
+
+	//
+	//
+	// Wait for user operation receipt
+	//
+	//
+	fmt.Println("\n\n\n=== Step 8: Wait for Receipt Without Authorization ===")
+	// Wait for receipt
+	receiptReq2 := &types.GetUserOpReceiptRequest{
+		UserOpHash: sendResp2.UserOpHash,
+	}
+	receipt2, err := client.WaitForUserOpReceipt(context.Background(), chainID, receiptReq2, 2*time.Second, 60*time.Second)
+	if err != nil {
+		log.Fatalf("Failed to get user op receipt: %v", err)
+	}
+
+	fmt.Println("\n=== Result ===")
+	fmt.Printf("✓ UserOp receipt received!\n")
+	logJSON(receipt2)
 }

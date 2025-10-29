@@ -26,36 +26,37 @@ type Call struct {
 
 // BuildUserOpRequest represents a request to build a user operation
 type BuildUserOpRequest struct {
-	Account       string               `json:"account"`
-	Authorization *SignedAuthorization `json:"authorization,omitempty"`
-	Nonce         string               `json:"nonce"`
-	Entrypoint    string               `json:"entrypoint"`
-	KernelVersion string               `json:"kernelVersion"`
-	Calls         []Call               `json:"calls"`
+	Account          string               `json:"account"`
+	Authorization    *SignedAuthorization `json:"authorization,omitempty"`
+	IsEip7702Account bool                 `json:"isEip7702Account,omitempty"`
+	Nonce            string               `json:"nonce,omitempty"`
+	Entrypoint       string               `json:"entrypoint"`
+	KernelVersion    string               `json:"kernelVersion"`
+	Calls            []Call               `json:"calls"`
 }
 
 // BuildUserOpResponse represents the response from building a user operation
 type BuildUserOpResponse struct {
-	Sender                        string              `json:"sender"`
-	Nonce                         string              `json:"nonce"`
-	CallData                      string              `json:"callData"`
-	AccountGasLimits              string              `json:"accountGasLimits"`
-	PreVerificationGas            string              `json:"preVerificationGas"`
-	GasFees                       string              `json:"gasFees"`
-	PaymasterAndData              string              `json:"paymasterAndData"`
-	Signature                     string              `json:"signature"`
-	Factory                       string              `json:"factory,omitempty"`
-	FactoryData                   string              `json:"factoryData,omitempty"`
-	UserOpHash                    string              `json:"userOpHash"`
-	Authorization                 SignedAuthorization `json:"authorization,omitempty"`
-	CallGasLimit                  string              `json:"callGasLimit,omitempty"`
-	VerificationGasLimit          string              `json:"verificationGasLimit,omitempty"`
-	MaxFeePerGas                  string              `json:"maxFeePerGas,omitempty"`
-	MaxPriorityFeePerGas          string              `json:"maxPriorityFeePerGas,omitempty"`
-	Paymaster                     string              `json:"paymaster,omitempty"`
-	PaymasterVerificationGasLimit string              `json:"paymasterVerificationGasLimit,omitempty"`
-	PaymasterPostOpGasLimit       string              `json:"paymasterPostOpGasLimit,omitempty"`
-	PaymasterData                 string              `json:"paymasterData,omitempty"`
+	Sender                        string               `json:"sender"`
+	Nonce                         string               `json:"nonce"`
+	CallData                      string               `json:"callData"`
+	AccountGasLimits              string               `json:"accountGasLimits"`
+	PreVerificationGas            string               `json:"preVerificationGas"`
+	GasFees                       string               `json:"gasFees"`
+	PaymasterAndData              string               `json:"paymasterAndData"`
+	Signature                     string               `json:"signature"`
+	Factory                       string               `json:"factory,omitempty"`
+	FactoryData                   string               `json:"factoryData,omitempty"`
+	UserOpHash                    string               `json:"userOpHash"`
+	Authorization                 *SignedAuthorization `json:"authorization,omitempty"`
+	CallGasLimit                  string               `json:"callGasLimit,omitempty"`
+	VerificationGasLimit          string               `json:"verificationGasLimit,omitempty"`
+	MaxFeePerGas                  string               `json:"maxFeePerGas,omitempty"`
+	MaxPriorityFeePerGas          string               `json:"maxPriorityFeePerGas,omitempty"`
+	Paymaster                     string               `json:"paymaster,omitempty"`
+	PaymasterVerificationGasLimit string               `json:"paymasterVerificationGasLimit,omitempty"`
+	PaymasterPostOpGasLimit       string               `json:"paymasterPostOpGasLimit,omitempty"`
+	PaymasterData                 string               `json:"paymasterData,omitempty"`
 }
 
 // SendUserOpRequest represents a request to send a user operation
