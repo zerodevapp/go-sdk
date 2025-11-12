@@ -41,36 +41,6 @@ func SignUserOpHash(userOpHash string, privateKey *ecdsa.PrivateKey) (string, er
 	return "0x" + hex.EncodeToString(useropSignature), nil
 }
 
-// VerifyUserOpSignature verifies that a signature is valid for a given user operation hash.
-// Returns true if the signature matches the expected address.
-func VerifyUserOpSignature(userOpHash, signature, address string) (bool, error) {
-	hashBytes := common.FromHex(userOpHash)
-	if len(hashBytes) != 32 {
-		return false, fmt.Errorf("invalid hash length: expected 32 bytes, got %d", len(hashBytes))
-	}
-
-	sigBytes := common.FromHex(signature)
-	if len(sigBytes) != 65 {
-		return false, fmt.Errorf("invalid signature length: expected 65 bytes, got %d", len(sigBytes))
-	}
-
-	if sigBytes[64] >= 27 {
-		sigBytes[64] -= 27
-	}
-
-	digest := accounts.TextHash(hashBytes)
-
-	pubKey, err := crypto.SigToPub(digest, sigBytes)
-	if err != nil {
-		return false, fmt.Errorf("failed to recover public key: %w", err)
-	}
-
-	recoveredAddr := crypto.PubkeyToAddress(*pubKey)
-	expectedAddr := common.HexToAddress(address)
-
-	return recoveredAddr == expectedAddr, nil
-}
-
 // SignAuthorization signs an EIP-7702 authorization tuple.
 // EIP-7702 allows EOAs to delegate execution to a contract implementation.
 // Returns a SignedAuthorization with signature components.
