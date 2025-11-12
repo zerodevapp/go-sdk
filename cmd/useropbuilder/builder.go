@@ -17,15 +17,18 @@ type UseropBuilderClient struct {
 	projectID  string
 	baseURL    string
 	apiKey     string
+	teamApiKey string
 	httpClient *http.Client
 }
 
 // NewUserOpBuilder creates a new UserOp Builder API client with default HTTP client.
-func NewUserOpBuilder(projectID string, baseURL string, apiKey string) *UseropBuilderClient {
+// teamApiKey is optional - pass empty string if not using team API key.
+func NewUserOpBuilder(projectID string, baseURL string, apiKey string, teamApiKey string) *UseropBuilderClient {
 	return &UseropBuilderClient{
-		projectID: projectID,
-		baseURL:   baseURL,
-		apiKey:    apiKey,
+		projectID:  projectID,
+		baseURL:    baseURL,
+		apiKey:     apiKey,
+		teamApiKey: teamApiKey,
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -33,11 +36,13 @@ func NewUserOpBuilder(projectID string, baseURL string, apiKey string) *UseropBu
 }
 
 // NewUserOpBuilderWithHTTPClient creates a new client with a custom HTTP client.
-func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, apiKey string, httpClient *http.Client) *UseropBuilderClient {
+// teamApiKey is optional - pass empty string if not using team API key.
+func NewUserOpBuilderWithHTTPClient(projectID string, baseURL string, apiKey string, teamApiKey string, httpClient *http.Client) *UseropBuilderClient {
 	return &UseropBuilderClient{
 		projectID:  projectID,
 		baseURL:    baseURL,
 		apiKey:     apiKey,
+		teamApiKey: teamApiKey,
 		httpClient: httpClient,
 	}
 }
@@ -51,7 +56,11 @@ func (c *UseropBuilderClient) InitialiseKernelClient(chainID uint64, ctx context
 		return false, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("X-API-KEY", c.apiKey)
+	if c.teamApiKey != "" {
+		httpReq.Header.Set("X-TEAM-API-KEY", c.teamApiKey)
+	} else {
+		httpReq.Header.Set("X-API-KEY", c.apiKey)
+	}
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -86,7 +95,11 @@ func (c *UseropBuilderClient) BuildUserOp(ctx context.Context, chainID uint64, r
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("X-API-KEY", c.apiKey)
+	if c.teamApiKey != "" {
+		httpReq.Header.Set("X-TEAM-API-KEY", c.teamApiKey)
+	} else {
+		httpReq.Header.Set("X-API-KEY", c.apiKey)
+	}
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -121,7 +134,11 @@ func (c *UseropBuilderClient) SendUserOp(ctx context.Context, chainID uint64, re
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("X-API-KEY", c.apiKey)
+	if c.teamApiKey != "" {
+		httpReq.Header.Set("X-TEAM-API-KEY", c.teamApiKey)
+	} else {
+		httpReq.Header.Set("X-API-KEY", c.apiKey)
+	}
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {
@@ -156,7 +173,11 @@ func (c *UseropBuilderClient) GetUserOpReceipt(ctx context.Context, chainID uint
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("X-API-KEY", c.apiKey)
+	if c.teamApiKey != "" {
+		httpReq.Header.Set("X-TEAM-API-KEY", c.teamApiKey)
+	} else {
+		httpReq.Header.Set("X-API-KEY", c.apiKey)
+	}
 
 	resp, err := c.httpClient.Do(httpReq)
 	if err != nil {

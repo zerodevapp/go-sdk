@@ -30,8 +30,10 @@ The SDK requires the following environment variables to be set:
    ```bash
    ZERODEV_PROJECT_ID=your-project-id-here
 
-   # THE API KEY IS A SECRET BETWEEN THE GOLANG SERVER AND THE USEROP BUILDER SERVICE
+   # Obtain the API Key from ZeroDev Dashboard
    USEROP_BUILDER_API_KEY=your-api-key-here
+   # Or use the team API key
+   USEROP_BUILDER_TEAM_API_KEY=your-team-api-key-here
    ```
 
 Get your Project ID from the [ZeroDev Dashboard](https://dashboard.zerodev.app).

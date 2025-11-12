@@ -25,8 +25,9 @@ func run4337Example() {
 	}
 
 	apiKey := os.Getenv("USEROP_BUILDER_API_KEY")
-	if apiKey == "" {
-		log.Fatal("USEROP_BUILDER_API_KEY is required. Please set it in .env file or as an environment variable")
+	teamApiKey := os.Getenv("USEROP_BUILDER_TEAM_API_KEY")
+	if apiKey == "" && teamApiKey == "" {
+		log.Fatal("Either USEROP_BUILDER_API_KEY or USEROP_BUILDER_TEAM_API_KEY is required. Please set one in .env file or as an environment variable")
 	}
 	chainID := uint64(11155111) // Sepolia
 	kernelVersion := constants.KernelVersion033
@@ -69,7 +70,7 @@ func run4337Example() {
 	// Create UserOpBuilder client
 	//
 	//
-	client := useropbuilder.NewUserOpBuilder(projectID, baseURL, apiKey)
+	client := useropbuilder.NewUserOpBuilder(projectID, baseURL, apiKey, teamApiKey)
 
 	// Optional
 	client.InitialiseKernelClient(chainID, context.Background())
