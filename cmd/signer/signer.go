@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/zerodevapp/sdk-go/cmd/types"
+	"github.com/zerodevapp/go-sdk/cmd/types"
 )
 
 // SignUserOpHash signs a user operation hash using Ethereum's personal_sign format.

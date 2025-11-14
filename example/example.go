@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/zerodevapp/sdk-go/cmd/constants"
-	"github.com/zerodevapp/sdk-go/cmd/signer"
-	types "github.com/zerodevapp/sdk-go/cmd/types"
-	useropbuilder "github.com/zerodevapp/sdk-go/cmd/useropbuilder"
+	"github.com/zerodevapp/go-sdk/cmd/constants"
+	"github.com/zerodevapp/go-sdk/cmd/signer"
+	types "github.com/zerodevapp/go-sdk/cmd/types"
+	useropbuilder "github.com/zerodevapp/go-sdk/cmd/useropbuilder"
 )
 
 func run7702Example() {

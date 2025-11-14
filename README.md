@@ -5,7 +5,7 @@ Go SDK for building and sending EIP-4337 User Operations with EIP-7702 support v
 ## Installation
 
 ```bash
-go get github.com/zerodevapp/sdk-go
+go get github.com/zerodevapp/go-sdk
 ```
 
 ## Features
@@ -71,5 +71,5 @@ See [LICENSE](LICENSE) file for details.
 ## Support
 
 For issues and questions:
-- GitHub Issues: [github.com/zerodevapp/sdk-go/issues](https://github.com/zerodevapp/sdk-go/issues)
+- GitHub Issues: [github.com/zerodevapp/go-sdk/issues](https://github.com/zerodevapp/go-sdk/issues)
 - Documentation: [docs.zerodev.app](https://docs.zerodev.app)

@@ -1,4 +1,4 @@
-module github.com/zerodevapp/sdk-go
+module github.com/zerodevapp/go-sdk
 
 go 1.25.3
 

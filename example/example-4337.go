@@ -8,8 +8,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/joho/godotenv"
-	"github.com/zerodevapp/sdk-go/cmd/constants"
-	useropbuilder "github.com/zerodevapp/sdk-go/cmd/useropbuilder"
+	"github.com/zerodevapp/go-sdk/cmd/constants"
+	useropbuilder "github.com/zerodevapp/go-sdk/cmd/useropbuilder"
 )
 
 func run4337Example() {

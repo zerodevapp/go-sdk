@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/zerodevapp/sdk-go/cmd/types"
+	"github.com/zerodevapp/go-sdk/cmd/types"
 )
 
 // UseropBuilderClient represents a UserOp Builder API client.
